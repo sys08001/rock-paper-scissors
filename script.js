@@ -14,79 +14,92 @@ function getComputerChoice() {
 }
 
 // Plays a single round of Rock, Paper, Scissors
-function playRound(playerSelection, computerSelection) {
-    playerSelection = playerSelection.toLowerCase();
+function playRound(e) {
+    let playerSelection = e.target.id;
+    let computerSelection = getComputerChoice();
+    let outputDisplay = document.querySelector('#result');
+
     if (playerSelection === "rock") {
         if (computerSelection === "rock") {
-            return "It's a tie!"
+            outputDisplay.textContent = "It's a tie!";
         }
         else if (computerSelection === "paper") {
-            return "You lose! Paper beats rock!"
+            outputDisplay.textContent = "You lose! Paper beats rock!";
+            computerScore++;
         }
         else {
-            return "You win! Rock beats scissors!"
+            outputDisplay.textContent = "You win! Rock beats scissors!";
+            playerScore++;
         }
     }
     else if (playerSelection === "paper") {
         if (computerSelection === "rock") {
-            return "You win! Paper beats rock!"
+            outputDisplay.textContent = "You win! Paper beats rock!";
+            playerScore++;
         }
         else if (computerSelection === "paper") {
-            return "It's a tie!"
+            outputDisplay.textContent = "It's a tie!";
         }
-        else if (computerSelection === "scissors") {
-            return "You lose! Scissors beats paper!"
+        else {
+            outputDisplay.textContent = "You lose! Scissors beats paper!";
+            computerScore++;
         }
     }
     else {
         if (computerSelection === "rock") {
-            return "You lose! Rock beats scissors!"
-        }
-        if (computerSelection === "paper") {
-            return "You win! Scissors beats paper!"
-        }
-        if (computerSelection === "scissors") {
-            return "It's a tie!"
-        }
-    }
-}
-
-// Plays a game of Rock, Paper, Scissors that consists of 5 rounds.
-// Score is kept for each round and an overall winner is declared at the end.
-function game() {
-    let playerScore = 0;
-    let computerScore = 0;
-
-    for (let round = 1; round < 6; round++) {
-        console.log(`### ROUND ${round} ###
-        `);
-        let playerSelection = prompt("Rock, Paper, or Scissors?");
-        let computerSelection = getComputerChoice();
-        console.log(`Player choice: ${playerSelection}`);
-        console.log(`Computer choice: ${computerSelection}`);
-        let roundResult = playRound(playerSelection, computerSelection);
-        console.log(roundResult);
-        if (roundResult.includes("win")) {
-            playerScore++;
-        }
-        else if (roundResult.includes("lose")) {
+            outputDisplay.textContent = "You lose! Rock beats scissors!";
             computerScore++;
         }
-        else {}
-        console.log(`Current player score: ${playerScore}`);
-        console.log(`Current computer score: ${computerScore}
-        `);
-    }
-
-    if (playerScore > computerScore) {
-        console.log("You win the game!");
-    }
-    else if (playerScore < computerScore) {
-        console.log("You lose the game!");
-    }
-    else {
-        console.log("The game is a tie!");
+        else if (computerSelection === "paper") {
+            outputDisplay.textContent = "You win! Scissors beats paper!";
+            playerScore++;
+        }
+        else {
+            outputDisplay.textContent = "It's a tie!";
+        }
     }
 }
 
-game();
+// Play a game of 5 rounds while displaying each round's score and 
+// the final result.
+function playGame(e) {
+    // Display the current round
+    let displayRound = document.querySelector('#round');
+    displayRound.style.fontWeight = 'bold';
+    displayRound.textContent = `### ROUND ${round} ###
+    `
+    // Play a single round
+    playRound(e);
+
+    // Display the current score
+    let displayScore = document.querySelector('#score');
+    displayScore.textContent = `Player: ${playerScore}\
+    Computer: ${computerScore}`;
+
+    // Increment the round
+    round++;
+
+    // After 5 rounds, display the final result
+    let finalScore = document.querySelector('#final');
+    if (round > 5) {
+        if (playerScore > computerScore) {
+            finalScore.style.color = 'green';
+            finalScore.textContent = "YOU WIN!";
+        }
+        else if (playerScore < computerScore) {
+            finalScore.style.color = 'red';
+            finalScore.textContent = "YOU LOSE!"; 
+        }
+        else {
+            finalScore.textContent = "IT'S A TIE!";
+        }
+    }
+}
+
+let round = 1;
+let playerScore = 0;
+let computerScore = 0;
+const buttons = document.querySelectorAll("button");
+buttons.forEach((button) => {
+    button.addEventListener('click', playGame)
+});
