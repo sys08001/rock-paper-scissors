@@ -12,4 +12,15 @@ function getComputerChoice() {
     }
 }
 
-console.log(getComputerChoice());
+// Prompts the user for a choice and returns it
+function getHumanChoice() {
+    let playerChoice = prompt("Rock, paper, or scissors?");
+    if (playerChoice == "rock") {
+        return "rock"
+    } else if (playerChoice == "paper") {
+        return "paper"
+    } else {
+        return "scissors"
+    }
+}
+
